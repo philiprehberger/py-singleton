@@ -66,3 +66,35 @@ class TestMultiton:
         assert a is not b
         assert a.name == "db"
         assert b.name == "cache"
+
+
+class TestClearOnExit:
+    def test_resets_on_exit(self) -> None:
+        from philiprehberger_singleton import clear_on_exit, singleton
+
+        @clear_on_exit
+        @singleton
+        class Service:
+            def __init__(self) -> None:
+                self.started = True
+
+        s1 = Service()
+        assert s1.started is True
+
+        with Service() as s:
+            assert s is s1
+
+        # After context exit, singleton should be reset
+        s2 = Service()
+        assert s2 is not s1
+
+    def test_works_as_context_manager(self) -> None:
+        from philiprehberger_singleton import clear_on_exit, singleton
+
+        @clear_on_exit
+        @singleton
+        class Cache:
+            pass
+
+        with Cache() as c:
+            assert c is not None
