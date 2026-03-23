@@ -1,14 +1,10 @@
 # philiprehberger-singleton
 
-[![PyPI](https://img.shields.io/pypi/v/philiprehberger-singleton)](https://pypi.org/project/philiprehberger-singleton/)
-[![Python](https://img.shields.io/pypi/pyversions/philiprehberger-singleton)](https://pypi.org/project/philiprehberger-singleton/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://github.com/philiprehberger/py-singleton/actions/workflows/publish.yml/badge.svg)](https://github.com/philiprehberger/py-singleton/actions/workflows/publish.yml)
+[![PyPI version](https://img.shields.io/pypi/v/philiprehberger-singleton.svg)](https://pypi.org/project/philiprehberger-singleton/)
+[![License](https://img.shields.io/github/license/philiprehberger/py-singleton)](LICENSE)
 
 Thread-safe singleton and multiton pattern decorators.
-
-## Requirements
-
-- Python >= 3.10
 
 ## Installation
 
@@ -78,19 +74,19 @@ Connection.reset()
 
 ## API
 
-| Name | Type | Description |
-|------|------|-------------|
-| `singleton` | decorator | Makes a class a thread-safe singleton. Returns the same instance on every call. |
-| `multiton(key)` | decorator factory | Makes a class a thread-safe multiton. One instance per unique value of the named parameter. |
-| `cls.reset()` | class method | Discards cached instance(s), added by both decorators. |
+| Function / Class | Description |
+|------------------|-------------|
+| `@singleton` | Thread-safe singleton decorator. Returns the same instance on every call. |
+| `@multiton(key)` | Thread-safe multiton decorator factory. One instance per unique value of the named parameter. |
+| `cls.reset()` | Discards cached instance(s), added by both decorators. |
 
 ## Development
 
 ```bash
 pip install -e .
-pytest
+python -m pytest tests/ -v
 ```
 
 ## License
 
-[MIT](LICENSE)
+MIT
