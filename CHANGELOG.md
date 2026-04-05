@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 0.2.0 (2026-04-04)
+
+- Add `clear_on_exit` decorator for context manager support on singletons
 ## 0.1.2 (2026-03-31)
 
 - Standardize README to 3-badge format with emoji Support section

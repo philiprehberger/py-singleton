@@ -6,7 +6,7 @@ import inspect
 import threading
 from typing import Any, TypeVar
 
-__all__ = ["multiton", "singleton"]
+__all__ = ["clear_on_exit", "multiton", "singleton"]
 
 T = TypeVar("T")
 
@@ -106,3 +106,28 @@ def multiton(key: str) -> Any:
         return cls
 
     return decorator
+
+
+def clear_on_exit(cls: type[T]) -> type[T]:
+    """Add context manager support to a singleton or multiton class.
+
+    The instance is returned on ``__enter__`` and ``reset()`` is called
+    on ``__exit__``, discarding cached instances automatically.
+
+    Args:
+        cls: A class already decorated with ``@singleton`` or ``@multiton``.
+
+    Returns:
+        The class with ``__enter__`` and ``__exit__`` methods added.
+    """
+
+    def __enter__(self: T) -> T:
+        return self
+
+    def __exit__(self: T, *args: Any) -> None:
+        if hasattr(type(self), "reset"):
+            type(self).reset()
+
+    cls.__enter__ = __enter__  # type: ignore[attr-defined]
+    cls.__exit__ = __exit__  # type: ignore[attr-defined]
+    return cls
