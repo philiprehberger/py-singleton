@@ -44,9 +44,27 @@ def singleton(cls: type[T]) -> type[T]:
         with lock:
             instance_holder["instance"] = None
 
+    @staticmethod
+    def instance() -> T:
+        """Return the cached singleton instance.
+
+        Unlike calling the class, this never constructs a new instance.
+
+        Raises:
+            RuntimeError: If no instance has been created yet.
+        """
+        with lock:
+            current = instance_holder["instance"]
+        if current is None:
+            raise RuntimeError(
+                f"{cls.__name__}.instance() called before the singleton was constructed"
+            )
+        return current  # type: ignore[return-value]
+
     cls.__new__ = __new__  # type: ignore[assignment]
     cls.__init__ = __init__  # type: ignore[assignment]
     cls.reset = reset  # type: ignore[attr-defined]
+    cls.instance = instance  # type: ignore[attr-defined]
     return cls
 
 

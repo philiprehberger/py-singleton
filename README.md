@@ -43,6 +43,17 @@ db3 = Database("postgres://localhost/new")
 assert db3.url == "postgres://localhost/new"
 ```
 
+#### Read-only access via `instance()`
+
+`instance()` returns the cached singleton without constructing one. Useful when callers should not be able to create the singleton, only access it.
+
+```python
+Database("postgres://localhost/mydb")
+db = Database.instance()        # → existing instance
+Database.reset()
+Database.instance()             # raises RuntimeError
+```
+
 ### Multiton
 
 The `@multiton(key=...)` decorator maintains one instance per unique key value:
@@ -79,6 +90,7 @@ Connection.reset()
 | `@singleton` | Thread-safe singleton decorator. Returns the same instance on every call. |
 | `@multiton(key)` | Thread-safe multiton decorator factory. One instance per unique value of the named parameter. |
 | `cls.reset()` | Discards cached instance(s), added by both decorators. |
+| `cls.instance()` | Returns the cached singleton without constructing one. Raises `RuntimeError` if not yet constructed. (Singleton only.) |
 
 ## Development
 

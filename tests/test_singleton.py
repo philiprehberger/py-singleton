@@ -1,5 +1,7 @@
 """Tests for singleton and multiton decorators."""
 
+import pytest
+
 from philiprehberger_singleton import multiton, singleton
 
 
@@ -40,6 +42,34 @@ class TestSingleton:
         b = Counter(2)
         assert b.start == 2
         assert a is not b
+
+    def test_instance_returns_cached(self) -> None:
+        @singleton
+        class Service:
+            def __init__(self, port: int = 0) -> None:
+                self.port = port
+
+        first = Service(8080)
+        assert Service.instance() is first
+        assert Service.instance().port == 8080
+
+    def test_instance_raises_before_construction(self) -> None:
+        @singleton
+        class Lazy:
+            pass
+
+        with pytest.raises(RuntimeError):
+            Lazy.instance()
+
+    def test_instance_after_reset_raises(self) -> None:
+        @singleton
+        class Toggle:
+            pass
+
+        Toggle()
+        Toggle.reset()
+        with pytest.raises(RuntimeError):
+            Toggle.instance()
 
 
 class TestMultiton:
