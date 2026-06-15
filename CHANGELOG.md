@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 (2026-06-15)
+
+- Add `is_instantiated()` classmethod on `@singleton`-decorated classes — non-raising counterpart to `instance()` for branching without try/except
+- Add package-card image to README
+
 ## 0.3.0 (2026-04-28)
 
 - Add `instance()` classmethod on `@singleton`-decorated classes — returns the cached instance without constructing one, raises `RuntimeError` if not yet built

@@ -61,10 +61,21 @@ def singleton(cls: type[T]) -> type[T]:
             )
         return current  # type: ignore[return-value]
 
+    @staticmethod
+    def is_instantiated() -> bool:
+        """Return whether the singleton has been constructed.
+
+        Non-raising counterpart to :meth:`instance` — useful for branching
+        without try/except.
+        """
+        with lock:
+            return instance_holder["instance"] is not None
+
     cls.__new__ = __new__  # type: ignore[assignment]
     cls.__init__ = __init__  # type: ignore[assignment]
     cls.reset = reset  # type: ignore[attr-defined]
     cls.instance = instance  # type: ignore[attr-defined]
+    cls.is_instantiated = is_instantiated  # type: ignore[attr-defined]
     return cls
 
 

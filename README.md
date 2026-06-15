@@ -4,6 +4,8 @@
 [![PyPI version](https://img.shields.io/pypi/v/philiprehberger-singleton.svg)](https://pypi.org/project/philiprehberger-singleton/)
 [![Last updated](https://img.shields.io/github/last-commit/philiprehberger/py-singleton)](https://github.com/philiprehberger/py-singleton/commits/main)
 
+![philiprehberger-singleton](https://raw.githubusercontent.com/philiprehberger/py-singleton/main/package-card.webp)
+
 Thread-safe singleton and multiton pattern decorators.
 
 ## Installation
@@ -54,6 +56,16 @@ Database.reset()
 Database.instance()             # raises RuntimeError
 ```
 
+#### Non-raising existence check via `is_instantiated()`
+
+When you only need to know whether the singleton was constructed (and don't want
+to use try/except around `instance()`), call `is_instantiated()`:
+
+```python
+if Database.is_instantiated():
+    Database.instance().close()
+```
+
 ### Multiton
 
 The `@multiton(key=...)` decorator maintains one instance per unique key value:
@@ -91,6 +103,7 @@ Connection.reset()
 | `@multiton(key)` | Thread-safe multiton decorator factory. One instance per unique value of the named parameter. |
 | `cls.reset()` | Discards cached instance(s), added by both decorators. |
 | `cls.instance()` | Returns the cached singleton without constructing one. Raises `RuntimeError` if not yet constructed. (Singleton only.) |
+| `cls.is_instantiated()` | Returns `True` if the singleton has been constructed, `False` otherwise. Non-raising. (Singleton only.) |
 
 ## Development
 

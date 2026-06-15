@@ -71,6 +71,25 @@ class TestSingleton:
         with pytest.raises(RuntimeError):
             Toggle.instance()
 
+    def test_is_instantiated_before_and_after_construction(self) -> None:
+        @singleton
+        class Probe:
+            pass
+
+        assert Probe.is_instantiated() is False
+        Probe()
+        assert Probe.is_instantiated() is True
+
+    def test_is_instantiated_false_after_reset(self) -> None:
+        @singleton
+        class Cycle:
+            pass
+
+        Cycle()
+        assert Cycle.is_instantiated() is True
+        Cycle.reset()
+        assert Cycle.is_instantiated() is False
+
 
 class TestMultiton:
     """Tests for the @multiton decorator."""
